@@ -75,10 +75,15 @@ const togglePrescribe = async(req, res) => {
     }
 }
 
+const postMedicine = async(req, res) => {
+    
+}
+
 module.exports = {
     postPrescribe,
     editPrescribe,
     getPrescribe,
     deletePrescribe,
     togglePrescribe,
+    postMedicine,
 }

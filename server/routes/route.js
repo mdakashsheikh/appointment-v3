@@ -85,7 +85,8 @@ const {
     editPrescribe, 
     getPrescribe,
     deletePrescribe,
-    togglePrescribe
+    togglePrescribe,
+    postMedicine
 } = require('../controllers/prescription');
 
 const router = express.Router();
@@ -175,6 +176,8 @@ router.post('/edit-prescribe/:id', editPrescribe);
 router.get('/get-prescribe', getPrescribe);
 router.delete('/delete-prescribe/:id', deletePrescribe);
 router.post('/toggle-prescribe/:id', togglePrescribe);
+router.post('/post-csv', postMedicine);
+
 
 //LOGIN Route URL
 router.post('/super-admin', superAdmin);
