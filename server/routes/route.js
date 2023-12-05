@@ -80,6 +80,14 @@ const {
     assistAdmin 
 } = require('../controllers/auth');
 
+const { 
+    postPrescribe, 
+    editPrescribe, 
+    getPrescribe,
+    deletePrescribe,
+    togglePrescribe
+} = require('../controllers/prescription');
+
 const router = express.Router();
 
 router.use(express.static('public'))
@@ -160,6 +168,13 @@ router.post('/post-sms', postSMS);
 router.post('/edit-sms/:id', editSMS);
 router.get('/get-sms', getSMS);
 router.delete('/delete-sms/:id', deleteSMS);
+
+//Prescription Route URL
+router.post('/post-prescribe', postPrescribe);
+router.post('/edit-prescribe/:id', editPrescribe);
+router.get('/get-prescribe', getPrescribe);
+router.delete('/delete-prescribe/:id', deletePrescribe);
+router.post('/toggle-prescribe/:id', togglePrescribe);
 
 //LOGIN Route URL
 router.post('/super-admin', superAdmin);

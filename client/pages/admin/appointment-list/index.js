@@ -1412,22 +1412,6 @@ const Appointment = () => {
                         footer={prescriptionDialogFooter}
                         onHide={hidePrescriptionDialog}
                     >
-
-                        <div className="formgrid grid">
-                            <div className="card flex justify-content-center gap-3">
-                                    <label htmlFor="age">Visit Status</label> 
-                                    <Checkbox onChange={e => setChecked(e.checked)} checked={checked}></Checkbox>
-                            </div>
-                            <div className="field col">
-                                <label htmlFor="price">Amount</label>
-                                <InputText
-                                    id="price"
-                                    value={(follow.price)}
-                                    onChange={(e) => onFollowChange(e, "price")}
-                                    placeholder='Enter  Dr. Visit Charge'
-                                />
-                            </div>
-                        </div>
                         
                         <div className="formgrid grid">
                             <div className="field col">
@@ -1474,28 +1458,6 @@ const Appointment = () => {
                             </div>
                         </div>
 
-                        <div >
-                            <FileUpload 
-                                multiple
-                                accept="image/*" 
-                                name='photo'
-                                url={`${URL}/post-follow-image`}
-                                maxFileSize={1000000} 
-                                emptyTemplate={<p className="m-0">Drag and drop files to here to upload.</p>} 
-                                onUpload={(e)=> { 
-                                    console.log( "slidufgoidh", e)
-                                    const data = JSON.parse(e.xhr.responseText)
-                                    console.log(data)
-                                    setFile([...file, ...data.file1]);
-                                }}
-                                onRemove={(e)=> { 
-                                    console.log("remove", e)
-                                }}
-                            />
-                        </div>.
-                        <div className='card px-1'>
-                            {imageShow()}
-                        </div>
                     </Dialog>
                     
                 </div>

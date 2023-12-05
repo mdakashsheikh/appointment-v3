@@ -98,6 +98,11 @@ const AppMenu = () => {
                         label: "SMS Templates",
                         icon: "pi pi-fw pi-comments",
                         to: '/admin/sms-temp'
+                    },
+                    {
+                        label: "Prescription Management",
+                        icon: "pi pi-book",
+                        to: '/admin/prescription-manage'
                     }
                 ],
             },
