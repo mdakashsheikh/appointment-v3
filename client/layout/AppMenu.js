@@ -53,6 +53,11 @@ const AppMenu = () => {
                         icon: "pi pi-calculator",
                         to: '/admin/commercial'
                         
+                    },
+                    {
+                        label: 'Patient List',
+                        icon: 'pi pi-users',
+                        to: '/admin/patient-list'
                     }
                 ],
             },

@@ -289,7 +289,6 @@ const Prescription_Manage = () => {
             </div>
         )
     }
-   
 
 
 

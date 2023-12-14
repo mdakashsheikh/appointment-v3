@@ -162,16 +162,7 @@ const Appointment = () => {
         setEditFollowDialog(false);
     }
 
-    const hidePrescriptionDialog = () => {
-        setSubmitted(false);
-        setPrescriptionDialog(false);
-    }
-
     follow.visit_status = checked;
-
-    const savePrescription = () => {
-
-    }
   
 
     const saveProduct = (type) => {
@@ -280,13 +271,6 @@ const Appointment = () => {
         setSCheck(0);
     };
 
-    const openPrescription = (patient) => {
-        console.log("PRISCRIPTION", patient);
-        setPrescription({ ...patient});
-        setPrescriptionDialog(true);
-
-    }
-
     const editFollow = (follow) => {
         setFollow({...follow});
         setChecked(follow.visit_status);
@@ -296,14 +280,6 @@ const Appointment = () => {
         setCheckSpecial(follow.specialist) 
 
     }
-
-    const deleteProduct = () => {
-        let _products = patients.filter((val) => val.id !== patient.id);
-        setPatients(_products);
-        setFolloDialog(false);
-        setPatient(emptyPatient);
-        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
-    };
 
     const exportCSV = () => {
         dt.current.exportCSV();
@@ -325,13 +301,6 @@ const Appointment = () => {
         let _follow = {...follow};
         _follow[`${name}`] = val;
 
-        setFollow(_follow);
-    }
-
-    const onCheckChange = (e, name) => {
-        let _follow = {...follow};
-        _follow[`${name}`] = e.checked;
-        
         setFollow(_follow);
     }
 
@@ -762,12 +731,6 @@ const Appointment = () => {
         }
     };
 
-    const prescriptionBodyTemplate = (rowData) => {
-        return(
-            <Button icon="pi pi-book"severity='success' rounded className='mr-2' onClick={() => openPrescription(rowData)}/>
-        )
-    }
-
 
     const topHeader = () => {
         return (
@@ -805,13 +768,6 @@ const Appointment = () => {
         <>
             <Button label='Cancel' icon='pi pi-times' text onClick={hideEditFollowDialog} />
             <Button label='Save' icon='pi pi-check' text onClick={ () => saveProduct('followEdit')} />
-        </>
-    );
-
-    const prescriptionDialogFooter = (
-        <>
-            <Button label='Cancel' icon='pi pi-times' text onClick={hidePrescriptionDialog} />
-            <Button label='Save' icon='pi pi-check' text onClick={ () => saveProduct('prescription')} />
         </>
     );
 
@@ -976,11 +932,6 @@ const Appointment = () => {
                             header="Action"
                             body={actionBodyTemplate}
                             headerStyle={{ minWidth: "2rem" }}
-                        ></Column>
-                        <Column
-                            header="Prescription"
-                            body={prescriptionBodyTemplate}
-                            headerStyle={{ minWidth: "1rem" }}
                         ></Column>
                     </DataTable>
 
@@ -1402,64 +1353,6 @@ const Appointment = () => {
                             {imageShow()}
                         </div>
                     </Dialog>
-
-                    <Dialog
-                        visible={prescriptionDialog}
-                        style={{ width: "950px" }}
-                        header="Create Prescription"
-                        modal
-                        className="p-fluid"
-                        footer={prescriptionDialogFooter}
-                        onHide={hidePrescriptionDialog}
-                    >
-                        
-                        <div className="formgrid grid">
-                            <div className="field col">
-                                <label htmlFor="date1">Follow Up Date</label>
-                                <Calendar 
-                                    value={new Date(follow.followUpDate)}
-                                    name='followUpDate' 
-                                    onChange={(e) => onFollowDateChange(e, "followUpDate")} 
-                                    dateFormat="dd/mm/yy" 
-                                    placeholder="Select a Date"
-                                    required
-                                    showIcon
-                                    className={classNames({
-                                        "p-invalid": submitted && !follow.followUpDate,
-                                    })}
-                                />
-                                {submitted && !follow.followUpDate && (
-                                    <small className="p-invalid">
-                                        Follow Up Date is required.
-                                    </small>
-                                )}
-                            </div>
-                            
-                            <div className="field col">
-                                <label htmlFor="time1">Time to Visit</label>
-                                <Dropdown
-                                    value={follow.visit_time}
-                                    name='time1'
-                                    onChange={(e) => onFollowChange(e, "visit_time")}
-                                    options={timeList1}
-                                    optionLabel="label"
-                                    showClear
-                                    placeholder="Select a Time"
-                                    required
-                                    className={classNames({
-                                        "p-invalid": submitted && !follow.visit_time,
-                                    })}
-                                />
-                                {submitted && !follow.visit_time && (
-                                    <small className="p-invalid">
-                                        Visit Time is required.
-                                    </small>
-                                )}
-                            </div>
-                        </div>
-
-                    </Dialog>
-                    
                 </div>
             </div>
         </div>
