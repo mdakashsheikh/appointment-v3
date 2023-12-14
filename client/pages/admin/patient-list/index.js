@@ -379,7 +379,7 @@ const Time_Manage = () => {
                                         <label htmlFor="specialist">Medicine Name</label>
                                         <Dropdown
                                             value={medicine_info.medicine_name}
-                                            name='specialist'
+                                            name='medicine_name'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info)}
                                             // options={specialistList}
                                             optionLabel="label"
