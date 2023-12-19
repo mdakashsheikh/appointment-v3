@@ -127,9 +127,11 @@ const Time_Manage = () => {
     };
 
     const onMedicineChange = (e, name, i, previous_data) => {
+        console.log('Nothing', e, name, i, previous_data);
         let val = (e.target && e.target.value) || ''; 
         let _data = { ...product};
-        _data[name][i] = {[name]: val}
+        _data[name][i] = {[name]: val};
+        setProduct(_data)
     }
 
     const nameBodyTemplate = (rowData) => {
