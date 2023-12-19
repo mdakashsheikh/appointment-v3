@@ -105,7 +105,7 @@ const Time_Manage = () => {
     };
 
     const editProduct = (product) => {
-        setProduct({ ...product });
+        setProduct({ ...product || '' });
         setProductDialog(true);
     };
 
@@ -127,7 +127,9 @@ const Time_Manage = () => {
     };
 
     const onMedicineChange = (e, name, i, previous_data) => {
-
+        let val = (e.target && e.target.value) || ''; 
+        let _data = { ...product};
+        _data[name][i] = {[name]: val}
     }
 
     const nameBodyTemplate = (rowData) => {
@@ -273,11 +275,18 @@ const Time_Manage = () => {
         )
     }
 
+    // medicine_info: [{ medicine_name: '', taking_time: '', taking_rule: '', taking_limite: ''}]
+
+    console.log('')
+
     const onAdd = () => {
-        const newData = { }
+        const newData = { ...product};
+        const newAdd = { medicine_name: '', taking_time: '', taking_rule: '', taking_limite: '' };
+        newData.medicine_info = [...(product.medicine_info || []), newAdd ]
+        setProduct(newData);
     }
 
-    console.log(product)
+    console.log(product.medicine_info)
 
     return (
         <div className="grid crud-demo">
@@ -380,7 +389,7 @@ const Time_Manage = () => {
                                         <Dropdown
                                             value={medicine_info.medicine_name}
                                             name='medicine_name'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info)}
+                                            onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info.medicine_name)}
                                             // options={specialistList}
                                             optionLabel="label"
                                             showClear
@@ -401,7 +410,7 @@ const Time_Manage = () => {
                                         <Dropdown
                                             value={medicine_info.taking_time}
                                             name='doctor'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info)}
+                                            onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info.taking_time)}
                                             // options={doctorList}
                                             optionLabel="label"
                                             showClear
