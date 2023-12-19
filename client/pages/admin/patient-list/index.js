@@ -6,7 +6,6 @@ import { Dropdown } from 'primereact/dropdown';
 import { InputText } from 'primereact/inputtext';
 import { Skeleton } from 'primereact/skeleton';
 import { Toast } from 'primereact/toast';
-import { ToggleButton } from 'primereact/togglebutton';
 import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef, useState } from 'react';
@@ -105,7 +104,10 @@ const Time_Manage = () => {
     };
 
     const editProduct = (product) => {
-        setProduct({ ...product || '' });
+        const empty_medicine_info = emptyPatient.medicine_info;
+        const medicine_info = product.medicine_info || empty_medicine_info;
+        setProduct({ ...product || '' , medicine_info});
+        console.log(product, 'Goru')
         setProductDialog(true);
     };
 
@@ -126,8 +128,8 @@ const Time_Manage = () => {
         setProduct(_product);
     };
 
-    const onMedicineChange = (e, name, i, previous_data) => {
-        console.log('Nothing', e, name, i, previous_data);
+    const onMedicineChange = (e, name, i) => {
+        console.log('Nothing', e, name, i);
         let val = (e.target && e.target.value) || ''; 
         let _data = { ...product};
         _data[name][i] = {[name]: val};
@@ -284,7 +286,8 @@ const Time_Manage = () => {
     const onAdd = () => {
         const newData = { ...product};
         const newAdd = { medicine_name: '', taking_time: '', taking_rule: '', taking_limite: '' };
-        newData.medicine_info = [...(product.medicine_info || []), newAdd ]
+        console.log(product,'product')
+        newData.medicine_info = [...product.medicine_info, newAdd ]
         setProduct(newData);
     }
 
@@ -375,7 +378,7 @@ const Time_Manage = () => {
 
                     <Dialog
                         visible={productDialog}
-                        style={{ width: "900px" }}
+                        style={{ width: "1100px" }}
                         header="Create a Prescription"
                         modal
                         className="p-fluid"
@@ -391,11 +394,11 @@ const Time_Manage = () => {
                                         <Dropdown
                                             value={medicine_info.medicine_name}
                                             name='medicine_name'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info.medicine_name)}
+                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
                                             // options={specialistList}
                                             optionLabel="label"
                                             showClear
-                                            placeholder="Select a Specialization"
+                                            placeholder="Select a Medicine Name"
                                             required
                                             className={classNames({
                                                 "p-invalid": submitted && !medicine_info.medicine_name,
@@ -403,7 +406,7 @@ const Time_Manage = () => {
                                         />
                                         {submitted && !medicine_info.medicine_name && (
                                             <small className="p-invalid">
-                                                Specialization is required.
+                                                Medicine Name is required.
                                             </small>
                                         )}
                                     </div>
@@ -412,11 +415,11 @@ const Time_Manage = () => {
                                         <Dropdown
                                             value={medicine_info.taking_time}
                                             name='doctor'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i, medicine_info.taking_time)}
+                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
                                             // options={doctorList}
                                             optionLabel="label"
                                             showClear
-                                            placeholder="Select a Doctor"
+                                            placeholder="Select a Medicne Time"
                                             required
                                             className={classNames({
                                                 "p-invalid": submitted && !medicine_info,
@@ -424,7 +427,49 @@ const Time_Manage = () => {
                                         />
                                         {submitted && !medicine_info && (
                                             <small className="p-invalid">
-                                                Doctor is required.
+                                                Medicne Time is required.
+                                            </small>
+                                        )}
+                                    </div>
+                                    <div className="field col">
+                                        <label htmlFor="doctor">Taking Rule</label>
+                                        <Dropdown
+                                            value={medicine_info.taking_rule}
+                                            name='doctor'
+                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
+                                            // options={doctorList}
+                                            optionLabel="label"
+                                            showClear
+                                            placeholder="Select a Medicne Rule"
+                                            required
+                                            className={classNames({
+                                                "p-invalid": submitted && !medicine_info,
+                                            })}
+                                        />
+                                        {submitted && !medicine_info && (
+                                            <small className="p-invalid">
+                                                Medicne Rule is required.
+                                            </small>
+                                        )}
+                                    </div>
+                                    <div className="field col">
+                                        <label htmlFor="doctor">Taking Limite</label>
+                                        <Dropdown
+                                            value={medicine_info.taking_time}
+                                            name='doctor'
+                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
+                                            // options={doctorList}
+                                            optionLabel="label"
+                                            showClear
+                                            placeholder="Select a Medicne Rule"
+                                            required
+                                            className={classNames({
+                                                "p-invalid": submitted && !medicine_info,
+                                            })}
+                                        />
+                                        {submitted && !medicine_info && (
+                                            <small className="p-invalid">
+                                                Medicne Limite is required.
                                             </small>
                                         )}
                                     </div>

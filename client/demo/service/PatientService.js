@@ -2,7 +2,7 @@ import axios from "axios";
 //   VM -------- 103.151.61.45
 //   localhost-- localhost
 
-export const URL = '//103.151.61.45:5000';
+export const URL = '//localhost:5000';
 
 export const PatientService = {
 
