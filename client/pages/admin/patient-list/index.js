@@ -68,7 +68,7 @@ const Time_Manage = () => {
         if(!jwtToken) {
             return;
         }
-        
+
         PatientService.getPatient().then((res) => setPatients(res.data.AllData));
         TimeService.getTime().then((res) => setProducts(res.data.AllData));
         MedicineTimeService.getMTime().then((res) => setMTime(res.data.AllData));
@@ -140,12 +140,28 @@ const Time_Manage = () => {
     };
 
     const onMedicineChange = (e, name, i) => {
-        console.log('Nothing', e, name, i);
+        // console.log('Nothing', e, name, i);
         let val = (e.target && e.target.value) || ''; 
         let _data = { ...product};
         _data[name][i] = {[name]: val};
         setProduct(_data)
     }
+
+    console.log(mLimite, 'mLimite')
+    const mTimeFiltered = mTime?.filter((item) => item.is_active == '1');
+    const TimeList = mTimeFiltered?.map((item) => {
+        return {  label: item.m_time, value: item.m_time }
+    })
+
+    const mRuleFiltered = mRule?.filter((item) => item.is_active == '1');
+    const ruleList = mRuleFiltered?.map((item) => {
+        return {  label: item.m_rule, value: item.m_rule }
+    })
+
+    const mLimiteFiltered = mLimite?.filter((item) => item.is_active == '1');
+    const limiteList = mLimiteFiltered?.map(item => {
+        return { label: item.medicine_limite, value: item.medicine_limite }
+    })
 
     const nameBodyTemplate = (rowData) => {
         return (
@@ -424,9 +440,9 @@ const Time_Manage = () => {
                                         <label htmlFor="doctor">Taking Time</label>
                                         <Dropdown
                                             value={medicine_info.taking_time}
-                                            name='doctor'
+                                            name='taking_time'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            // options={doctorList}
+                                            options={TimeList}
                                             optionLabel="label"
                                             showClear
                                             placeholder="Select a Medicne Time"
@@ -447,7 +463,7 @@ const Time_Manage = () => {
                                             value={medicine_info.taking_rule}
                                             name='doctor'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            // options={doctorList}
+                                            options={ruleList}
                                             optionLabel="label"
                                             showClear
                                             placeholder="Select a Medicne Rule"
@@ -468,7 +484,7 @@ const Time_Manage = () => {
                                             value={medicine_info.taking_limite}
                                             name='doctor'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            // options={doctorList}
+                                            options={limiteList}
                                             optionLabel="label"
                                             showClear
                                             placeholder="Select a Medicne Rule"
