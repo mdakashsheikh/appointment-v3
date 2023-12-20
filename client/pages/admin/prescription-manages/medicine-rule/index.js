@@ -10,19 +10,19 @@ import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { getJWTAdmin } from '../../../../admin-utils/utils';
-import { TimeService } from '../../../../demo/service/TimeService';
+import { MedicineRuleService } from '../../../../demo/service/MedicineRuleService';
 
-const Time_Manage = () => {
+const Medicine_Rule = () => {
     let emptyProduct = {
         id: 0,
-        st_time: '',
-        en_time: '',
+        m_rule: '',
+        details: '',
     };
 
-    const [products, setProducts] = useState(null);
+    const [mRules, setMRules] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [product, setProduct] = useState(emptyProduct);
+    const [mRule, setMRule] = useState(emptyProduct);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -46,12 +46,14 @@ const Time_Manage = () => {
         if(!jwtToken) {
             return;
         }
-        TimeService.getTime().then((res) => setProducts(res.data.AllData));
+
+        MedicineRuleService.getRule().then((res) => setMRules(res.data.AllData));
+        
 
     }, [ jwtToken,toggleRefresh]);
 
     const openNew = () => {
-        setProduct(emptyProduct);
+        setMRule(emptyProduct);
         setSubmitted(false);
         setProductDialog(true);
     };
@@ -69,47 +71,45 @@ const Time_Manage = () => {
     const saveProduct = () => {
         setSubmitted(true);
 
-        console.log("PPPP1",product)
+        console.log("PPPP1",mRule)
 
-        if( product.st_time && product.en_time, product._id) {
-            TimeService.editTime(
-                product.st_time,
-                product.en_time,
-                product._id,
+        if( mRule.m_rule && mRule.details, mRule._id) {
+            MedicineRuleService.editRule(
+                mRule.m_rule,
+                mRule.details,
+                mRule._id,
             ).then(() => {
                 setTogleRefresh(!toggleRefresh);
                 setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Updated', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Medicine Rule is Updated', life: 3000 });
             })
-        } else if( product.st_time && product.en_time) {
-            TimeService.postTime(
-                product.st_time,
-                product.en_time,
+        } else if( mRule.m_rule ) {
+            MedicineRuleService.postRule(
+                mRule.m_rule,
+                mRule.details,
             ).then(() => {
                 setTogleRefresh(!toggleRefresh);
                 setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Time is Created', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Medicine Rule is Created', life: 3000 });
             })
         }
     };
 
-    const editProduct = (product) => {
-        setProduct({ ...product });
+    const editProduct = (mRule) => {
+        setMRule({ ...mRule });
         setProductDialog(true);
     };
 
-    console.log('product--->', product)
-
-    const confirmDeleteProduct = (product) => {
-        setProduct(product);
+    const confirmDeleteProduct = (mRule) => {
+        setMRule(mRule);
         setDeleteProductDialog(true);
     };
 
     const deleteProduct = () => {
-        TimeService.deleteTime(product._id).then(() => {
+        MedicineRuleService.deleteRule(mRule._id).then(() => {
             setTogleRefresh(!toggleRefresh);
             setDeleteProductDialog(false);
-            setProduct(emptyProduct);
+            setMRule(emptyProduct);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Deleted', life: 3000 });
         })
     };
@@ -118,37 +118,26 @@ const Time_Manage = () => {
 
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
+        let _product = { ...mRule };
         _product[`${name}`] = val;
 
-        setProduct(_product);
+        setMRule(_product);
     };
 
-
-    const codeBodyTemplate = (rowData) => {
+    const m_ruleBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Code</span>
-                {rowData.id}
-            </>
-        );
-    };
-
-
-    const st_timeBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Start Time</span>
-                {rowData.st_time}
+                <span className="p-column-title">Medicine Rule</span>
+                {rowData.m_rule}
             </>
         );
     }
 
-    const en_timeBodyTemplate = (rowData) => {
+    const detailsBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">End Time</span>
-                {rowData.en_time}
+                <span className="p-column-title">Details</span>
+                {rowData.details}
             </>
         );
     }
@@ -161,7 +150,7 @@ const Time_Manage = () => {
                 if (rowData.is_active == '0') {
                     is_active = '1'
                 }
-                TimeService.toggleTime(is_active, rowData._id).then(() => {
+                MedicineRuleService.toggleRule(is_active, rowData._id).then(() => {
                 setTogleRefresh(!toggleRefresh)
                 })
              }} />
@@ -182,7 +171,7 @@ const Time_Manage = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <h2 className="m-0">Time Management</h2>
+                    <h2 className="m-0">Medicine Rule</h2>
                 </div>
             </React.Fragment>
         );
@@ -191,7 +180,7 @@ const Time_Manage = () => {
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <Button
-                    label="Add Time"
+                    label="Add Medicine Rule"
                     icon="pi pi-plus"
                     severity="sucess"
                     className="mr-2"
@@ -217,7 +206,7 @@ const Time_Manage = () => {
         </>
     );
 
-    if(products == null) {
+    if(mRules == null) {
         return (
             <div className="card">
                 <div className="border-round border-1 surface-border p-4 surface-card">
@@ -253,7 +242,7 @@ const Time_Manage = () => {
                     ></Toolbar>
                     <DataTable
                         ref={dt}
-                        value={products}
+                        value={mRules}
                         selection={selectedProducts}
                         onSelectionChange={(e) => setSelectedProducts(e.value)}
                         dataKey="id"
@@ -262,30 +251,24 @@ const Time_Manage = () => {
                         rowsPerPageOptions={[5, 10, 25, 50]}
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} Out of {totalRecords} Time-Mangements"
+                        currentPageReportTemplate="Showing {first} to {last} Out of {totalRecords} Medicine Rule"
                         globalFilter={globalFilter}
-                        emptyMessage="Not Available Time-Management item in Here."
+                        emptyMessage="Empty."
                         header={header}
                         responsiveLayout="scroll"
                     >
 
-                        {/* <Column
-                            field="sl"
-                            header="SL"
-                            body={codeBodyTemplate}
-                            sortable
-                        ></Column> */}
                         <Column
-                            field="st_time"
-                            header="Start Time"
+                            field="m_rule"
+                            header="Medicine Rule"
                             sortable
-                            body={st_timeBodyTemplate}
+                            body={m_ruleBodyTemplate}
                             headerStyle={{ minWidth: "10rem" }}
                         ></Column>
                          <Column
-                            field="en_time"
-                            header="End Time"
-                            body={en_timeBodyTemplate}
+                            field="details"
+                            header="Details"
+                            body={detailsBodyTemplate}
                             headerStyle={{ minWidth: "15rem" }}
                         ></Column>
                         <Column
@@ -303,7 +286,7 @@ const Time_Manage = () => {
                     <Dialog
                         visible={productDialog}
                         style={{ width: "450px" }}
-                        header="Add Time Management "
+                        header="Add Medicine Rule"
                         modal
                         className="p-fluid"
                         footer={productDialogFooter}
@@ -311,40 +294,36 @@ const Time_Manage = () => {
                     >
                 
                         <div className="field">
-                            <label htmlFor="st_time">Start Time</label>
+                            <label htmlFor="m_rule">Medicine Rule</label>
                             <InputText 
-                                id="st_time" 
-                                value={product.st_time} 
-                                onChange={(e) => onInputChange(e, "st_time")} 
+                                id="m_rule" 
+                                value={mRule.m_rule} 
+                                onChange={(e) => onInputChange(e, "m_rule")} 
+                                placeholder='After Meal'
                                 required 
                                 autoFocus 
-                                className={classNames({ 'p-invalid': submitted && !product.st_time })} 
+                                className={classNames({ 'p-invalid': submitted && !mRule.m_rule })} 
                                 />
-                            {submitted && !product.st_time && <small className="p-invalid">
-                                Start Time is required.
+                            {submitted && !mRule.m_rule && <small className="p-invalid">
+                                Medicine Rule is required.
                             </small>}
                         </div>
                         <div className="field">
-                            <label htmlFor="en_time">End Time</label>
+                            <label htmlFor="details">Details</label>
                             <InputText 
-                                id="en_time" 
-                                value={product.en_time} 
-                                onChange={(e) => onInputChange(e, "en_time")} 
-                                required 
-                                className={classNames({ 'p-invalid': submitted && !product.en_time })} 
-                                />
-                            {submitted && !product.en_time && <small className="p-invalid">
-                                End Time is required.
-                            </small>}
+                                id="details" 
+                                value={mRule.details} 
+                                onChange={(e) => onInputChange(e, "details")}
+                            />
                         </div>
                     </Dialog>
 
                     <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {product && (
+                            {mRule && (
                                 <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
+                                    Are you sure you want to delete <b>{mRule.name}</b>?
                                 </span>
                             )}
                         </div>
@@ -356,4 +335,4 @@ const Time_Manage = () => {
     );
 };
 
-export default  Time_Manage;
+export default  Medicine_Rule;

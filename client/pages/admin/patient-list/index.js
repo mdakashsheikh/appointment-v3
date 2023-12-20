@@ -12,6 +12,9 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getJWTAdmin } from '../../../admin-utils/utils';
 import { TimeService } from '../../../demo/service/TimeService';
 import { PatientService } from '../../../demo/service/PatientService';
+import { MedicineTimeService } from '../../../demo/service/MedecineTimeService';
+import { MedicineRuleService } from '../../../demo/service/MedicineRuleService';
+import { MedicineLimiteService } from '../../../demo/service/MedicineLimiteService';
 
 const Time_Manage = () => {
     let emptyPatient = {
@@ -46,6 +49,10 @@ const Time_Manage = () => {
     const [toggleRefresh, setTogleRefresh] = useState(false);
     const [jwtToken, setJwtToken] = useState(null);
 
+    const [mTime, setMTime] = useState(null);
+    const [mLimite, setMLimite] = useState(null);
+    const [mRule, setMRule] = useState(null);
+
     useEffect(() => {
         const jwtToken = getJWTAdmin();
 
@@ -61,8 +68,12 @@ const Time_Manage = () => {
         if(!jwtToken) {
             return;
         }
+        
         PatientService.getPatient().then((res) => setPatients(res.data.AllData));
         TimeService.getTime().then((res) => setProducts(res.data.AllData));
+        MedicineTimeService.getMTime().then((res) => setMTime(res.data.AllData));
+        MedicineRuleService.getRule().then((res) => setMRule(res.data.AllData));
+        MedicineLimiteService.getLimite().then((res) => setMLimite(res.data.AllData));
 
     }, [ jwtToken,toggleRefresh]);
 
@@ -312,9 +323,9 @@ const Time_Manage = () => {
                         rowsPerPageOptions={[5, 10, 25, 50]}
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} Out of {totalRecords} Time-Mangements"
+                        currentPageReportTemplate="Showing {first} to {last} Out of {totalRecords} Patients"
                         globalFilter={globalFilter}
-                        emptyMessage="Not Available Time-Management item in Here."
+                        emptyMessage="Empty Patients"
                         header={header}
                         responsiveLayout="scroll"
                     >

@@ -12,7 +12,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import { getJWTAdmin } from '../../../../admin-utils/utils';
 import { MedicineTimeService } from '../../../../demo/service/MedecineTimeService';
 
-const Time_Manage = () => {
+const Medicine_Time = () => {
     let emptyTime = {
         id: 0,
         m_time: '',
@@ -298,6 +298,7 @@ const Time_Manage = () => {
                                 id="m_time" 
                                 value={mTime.m_time} 
                                 onChange={(e) => onInputChange(e, "m_time")} 
+                                placeholder='1 + 1 + 1'
                                 required 
                                 autoFocus 
                                 className={classNames({ 'p-invalid': submitted && !mTime.m_time })} 
@@ -333,4 +334,4 @@ const Time_Manage = () => {
     );
 };
 
-export default  Time_Manage;
+export default  Medicine_Time;

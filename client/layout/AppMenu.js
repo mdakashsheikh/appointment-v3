@@ -70,57 +70,59 @@ const AppMenu = () => {
                         to: "/admin/appointment-list",
                     },
                     {
-                        label: "Specialization Management",
-                        icon: "pi pi-fw pi-briefcase",
-                        to: '/admin/specialist-manage'
+                        label: 'Master Data Mangement',
+                        icon: 'pi pi-fw pi-globe',
+                        items: [
+                            
+                            {
+                                label: "Specialization Management",
+                                icon: "pi pi-fw pi-briefcase",
+                                to: '/admin/specialist-manage'
+                            },
+                            {
+                                label: "Time Management",
+                                icon: "pi pi-fw pi-clock",
+                                to: '/admin/time-manage'
+                            },
+                            {
+                                label: "Chamber Menagement",
+                                icon: "pi pi-fw pi-globe",
+                                to: "/admin/chamber-manage"
+                            },
+                            {
+                                label: "Doctor Management",
+                                icon: "pi pi-fw pi-user-edit",
+                                to: '/admin/doctor-manage'
+                            },
+                            {
+                                label: "Availability Management",
+                                icon: "pi pi-fw pi-book",
+                                to: "/admin/availability-manage"
+                            },
+                            {
+                                label: "SMS Templates",
+                                icon: "pi pi-fw pi-comments",
+                                to: '/admin/sms-temp'
+                            },
+                        ]
                     },
                     {
-                        label: "Time Management",
-                        icon: "pi pi-fw pi-clock",
-                        to: '/admin/time-manage'
-                    },
-                    {
-                        label: "Chamber Menagement",
-                        icon: "pi pi-fw pi-globe",
-                        to: "/admin/chamber-manage"
-                    },
-                    {
-                        label: "Doctor Management",
-                        icon: "pi pi-fw pi-user-edit",
-                        to: '/admin/doctor-manage'
-                    },
-                    {
-                        label: "Availability Management",
-                        icon: "pi pi-fw pi-book",
-                        to: "/admin/availability-manage"
-                    },
-                    {
-                        label: "SMS Templates",
-                        icon: "pi pi-fw pi-comments",
-                        to: '/admin/sms-temp'
-                    },
-                    {
-                        label: "Prescription Management",
-                        icon: "pi pi-book",
-                        to: '/admin/prescription-manage'
-                    },
-                    {
-                        label: 'Prescription Management2',
+                        label: 'Prescription Management',
                         icon: 'pi pi-book',
                         items: [
                             {
                                 label: 'Medicine Time',
-                                icon: 'pi pi-fw pi-bookmark',
+                                icon: 'pi pi-clock',
                                 to: '/admin/prescription-manages/medicine-time'
                             },
                             {
                                 label: 'Medicne Limite',
-                                icon: 'pi pi-fw pi-bookmark',
+                                icon: 'pi pi-fw pi-stop',
                                 to: '/admin/prescription-manages/medicine-limite'
                             },
                             {
                                 label: 'Medicine Rule',
-                                icon: 'pi pi-fw pi-bookmark',
+                                icon: 'pi pi-clone',
                                 to: '/admin/prescription-manages/medicine-rule'
                             }
                         ]

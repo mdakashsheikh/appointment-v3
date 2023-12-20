@@ -96,6 +96,7 @@ const {
     deleteLimite,
     toggleLimite,
 } = require('../controllers/medicineLimite');
+
 const { 
     postMTime, 
     editMTime, 
@@ -103,6 +104,14 @@ const {
     deleteMTime,
     toggleMTime
 } = require('../controllers/medicineTime');
+
+const { 
+    postRule, 
+    editRule, 
+    getRule,
+    deleteRule,
+    toggleRule
+} = require('../controllers/medicineRule');
 
 const router = express.Router();
 
@@ -206,6 +215,13 @@ router.post('/edit-m-time/:id', editMTime);
 router.get('/get-m-time', getMTime);
 router.delete('/delete-m-time/:id', deleteMTime);
 router.post('/toggle-m-time/:id', toggleMTime);
+
+//Medicine Rule Route URL
+router.post('/post-rule', postRule);
+router.post('/edit-rule/:id', editRule);
+router.get('/get-rule', getRule);
+router.delete('/delete-rule/:id', deleteRule);
+router.post('/toggle-rule/:id', toggleRule);
 
 //LOGIN Route URL
 router.post('/super-admin', superAdmin);
