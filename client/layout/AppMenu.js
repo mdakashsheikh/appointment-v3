@@ -94,11 +94,6 @@ const AppMenu = () => {
                         icon: "pi pi-fw pi-book",
                         to: "/admin/availability-manage"
                     },
-                    // {
-                    //     label: "General Setting",
-                    //     icon: "pi pi-fw pi-bookmark",
-                    //     to: '/pages/general-set'
-                    // },
                     {
                         label: "SMS Templates",
                         icon: "pi pi-fw pi-comments",
@@ -108,7 +103,29 @@ const AppMenu = () => {
                         label: "Prescription Management",
                         icon: "pi pi-book",
                         to: '/admin/prescription-manage'
+                    },
+                    {
+                        label: 'Prescription Management2',
+                        icon: 'pi pi-book',
+                        items: [
+                            {
+                                label: 'Medicine Time',
+                                icon: 'pi pi-fw pi-bookmark',
+                                to: '/admin/prescription-manages/medicine-time'
+                            },
+                            {
+                                label: 'Medicne Limite',
+                                icon: 'pi pi-fw pi-bookmark',
+                                to: '/admin/prescription-manages/medicine-limite'
+                            },
+                            {
+                                label: 'Medicine Rule',
+                                icon: 'pi pi-fw pi-bookmark',
+                                to: '/admin/prescription-manages/medicine-rule'
+                            }
+                        ]
                     }
+                    
                 ],
             },
             {

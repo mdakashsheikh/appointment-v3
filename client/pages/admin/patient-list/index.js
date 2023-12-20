@@ -250,6 +250,7 @@ const Time_Manage = () => {
             <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
         </>
     );
+    
     const deleteProductDialogFooter = (
         <>
             <Button label="No" icon="pi pi-times" text onClick={hideDeleteProductDialog} />
@@ -280,8 +281,6 @@ const Time_Manage = () => {
     }
 
     // medicine_info: [{ medicine_name: '', taking_time: '', taking_rule: '', taking_limite: ''}]
-
-    console.log('')
 
     const onAdd = () => {
         const newData = { ...product};
@@ -455,7 +454,7 @@ const Time_Manage = () => {
                                     <div className="field col">
                                         <label htmlFor="doctor">Taking Limite</label>
                                         <Dropdown
-                                            value={medicine_info.taking_time}
+                                            value={medicine_info.taking_limite}
                                             name='doctor'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i)}
                                             // options={doctorList}

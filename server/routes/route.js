@@ -89,6 +89,14 @@ const {
     postMedicine
 } = require('../controllers/prescription');
 
+const { 
+    postLimite, 
+    editLimite,
+    getLimite,
+    deleteLimite,
+    toggleLimite,
+} = require('../controllers/medicineLimite');
+
 const router = express.Router();
 
 router.use(express.static('public'))
@@ -178,6 +186,12 @@ router.delete('/delete-prescribe/:id', deletePrescribe);
 router.post('/toggle-prescribe/:id', togglePrescribe);
 router.post('/post-csv', postMedicine);
 
+//Medicine Limite Route URL
+router.post('/post-limite', postLimite);
+router.post('/edit-limite/:id', editLimite);
+router.get('/get-limite', getLimite);
+router.delete('/delete-limite/:id', deleteLimite);
+router.post('/toggle-limite/:id', toggleLimite);
 
 //LOGIN Route URL
 router.post('/super-admin', superAdmin);
