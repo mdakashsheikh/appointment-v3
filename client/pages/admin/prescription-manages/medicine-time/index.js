@@ -10,19 +10,19 @@ import { Toolbar } from 'primereact/toolbar';
 import { classNames } from 'primereact/utils';
 import React, { useEffect, useRef, useState } from 'react';
 import { getJWTAdmin } from '../../../../admin-utils/utils';
-import { TimeService } from '../../../../demo/service/TimeService';
+import { MedicineTimeService } from '../../../../demo/service/MedecineTimeService';
 
 const Time_Manage = () => {
-    let emptyProduct = {
+    let emptyTime = {
         id: 0,
-        st_time: '',
-        en_time: '',
+        m_time: '',
+        details: '',
     };
 
-    const [products, setProducts] = useState(null);
+    const [mTimes, setMTimes] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
-    const [product, setProduct] = useState(emptyProduct);
+    const [mTime, setMTime] = useState(emptyTime);
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -46,12 +46,13 @@ const Time_Manage = () => {
         if(!jwtToken) {
             return;
         }
-        TimeService.getTime().then((res) => setProducts(res.data.AllData));
+
+        MedicineTimeService.getMTime().then((res) => setMTimes(res.data.AllData));
 
     }, [ jwtToken,toggleRefresh]);
 
     const openNew = () => {
-        setProduct(emptyProduct);
+        setMTime(emptyTime);
         setSubmitted(false);
         setProductDialog(true);
     };
@@ -69,22 +70,22 @@ const Time_Manage = () => {
     const saveProduct = () => {
         setSubmitted(true);
 
-        console.log("PPPP1",product)
+        console.log("PPPP1",mTime)
 
-        if( product.st_time && product.en_time, product._id) {
-            TimeService.editTime(
-                product.st_time,
-                product.en_time,
-                product._id,
+        if( mTime.m_time && mTime.details, mTime._id) {
+            MedicineTimeService.editMTime(
+                mTime.m_time,
+                mTime.details,
+                mTime._id,
             ).then(() => {
                 setTogleRefresh(!toggleRefresh);
                 setProductDialog(false);
                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Updated', life: 3000 });
             })
-        } else if( product.st_time && product.en_time) {
-            TimeService.postTime(
-                product.st_time,
-                product.en_time,
+        } else if( mTime.m_time ) {
+            MedicineTimeService.postMTime(
+                mTime.m_time,
+                mTime.details,
             ).then(() => {
                 setTogleRefresh(!toggleRefresh);
                 setProductDialog(false);
@@ -93,23 +94,21 @@ const Time_Manage = () => {
         }
     };
 
-    const editProduct = (product) => {
-        setProduct({ ...product });
+    const editProduct = (mTime) => {
+        setMTime({ ...mTime });
         setProductDialog(true);
     };
 
-    console.log('product--->', product)
-
-    const confirmDeleteProduct = (product) => {
-        setProduct(product);
+    const confirmDeleteProduct = (mTime) => {
+        setMTime(mTime);
         setDeleteProductDialog(true);
     };
 
     const deleteProduct = () => {
-        TimeService.deleteTime(product._id).then(() => {
+        MedicineTimeService.deleteMTime(mTime._id).then(() => {
             setTogleRefresh(!toggleRefresh);
             setDeleteProductDialog(false);
-            setProduct(emptyProduct);
+            setMTime(emptyTime);
             toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Deleted', life: 3000 });
         })
     };
@@ -118,37 +117,26 @@ const Time_Manage = () => {
 
     const onInputChange = (e, name) => {
         const val = (e.target && e.target.value) || '';
-        let _product = { ...product };
+        let _product = { ...mTime };
         _product[`${name}`] = val;
 
-        setProduct(_product);
+        setMTime(_product);
     };
 
-
-    const codeBodyTemplate = (rowData) => {
+    const m_timeBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">Code</span>
-                {rowData.id}
-            </>
-        );
-    };
-
-
-    const st_timeBodyTemplate = (rowData) => {
-        return (
-            <>
-                <span className="p-column-title">Start Time</span>
-                {rowData.st_time}
+                <span className="p-column-title">Medicine Time</span>
+                {rowData.m_time}
             </>
         );
     }
 
-    const en_timeBodyTemplate = (rowData) => {
+    const detailsBodyTemplate = (rowData) => {
         return (
             <>
-                <span className="p-column-title">End Time</span>
-                {rowData.en_time}
+                <span className="p-column-title">Details</span>
+                {rowData.details}
             </>
         );
     }
@@ -161,7 +149,7 @@ const Time_Manage = () => {
                 if (rowData.is_active == '0') {
                     is_active = '1'
                 }
-                TimeService.toggleTime(is_active, rowData._id).then(() => {
+                MedicineTimeService.toggleMTime(is_active, rowData._id).then(() => {
                 setTogleRefresh(!toggleRefresh)
                 })
              }} />
@@ -182,7 +170,7 @@ const Time_Manage = () => {
         return (
             <React.Fragment>
                 <div className="my-2">
-                    <h2 className="m-0">Time Management</h2>
+                    <h2 className="m-0">Medicine Time</h2>
                 </div>
             </React.Fragment>
         );
@@ -191,7 +179,7 @@ const Time_Manage = () => {
     const header = (
         <div className="flex flex-column md:flex-row md:justify-content-between md:align-items-center">
             <Button
-                    label="Add Time"
+                    label="Add Medicine Time"
                     icon="pi pi-plus"
                     severity="sucess"
                     className="mr-2"
@@ -217,7 +205,7 @@ const Time_Manage = () => {
         </>
     );
 
-    if(products == null) {
+    if(mTimes == null) {
         return (
             <div className="card">
                 <div className="border-round border-1 surface-border p-4 surface-card">
@@ -253,7 +241,7 @@ const Time_Manage = () => {
                     ></Toolbar>
                     <DataTable
                         ref={dt}
-                        value={products}
+                        value={mTimes}
                         selection={selectedProducts}
                         onSelectionChange={(e) => setSelectedProducts(e.value)}
                         dataKey="id"
@@ -262,30 +250,24 @@ const Time_Manage = () => {
                         rowsPerPageOptions={[5, 10, 25, 50]}
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
-                        currentPageReportTemplate="Showing {first} to {last} Out of {totalRecords} Time-Mangements"
+                        currentPageReportTemplate="Showing {first} to {last} Out of {totalRecords} Medicine Time"
                         globalFilter={globalFilter}
-                        emptyMessage="Not Available Time-Management item in Here."
+                        emptyMessage="Empty."
                         header={header}
                         responsiveLayout="scroll"
                     >
 
-                        {/* <Column
-                            field="sl"
-                            header="SL"
-                            body={codeBodyTemplate}
-                            sortable
-                        ></Column> */}
                         <Column
-                            field="st_time"
-                            header="Start Time"
+                            field="m_time"
+                            header="Medicine Time"
                             sortable
-                            body={st_timeBodyTemplate}
+                            body={m_timeBodyTemplate}
                             headerStyle={{ minWidth: "10rem" }}
                         ></Column>
                          <Column
-                            field="en_time"
-                            header="End Time"
-                            body={en_timeBodyTemplate}
+                            field="details"
+                            header="Details"
+                            body={detailsBodyTemplate}
                             headerStyle={{ minWidth: "15rem" }}
                         ></Column>
                         <Column
@@ -311,40 +293,35 @@ const Time_Manage = () => {
                     >
                 
                         <div className="field">
-                            <label htmlFor="st_time">Start Time</label>
+                            <label htmlFor="m_time">Medicine Time</label>
                             <InputText 
-                                id="st_time" 
-                                value={product.st_time} 
-                                onChange={(e) => onInputChange(e, "st_time")} 
+                                id="m_time" 
+                                value={mTime.m_time} 
+                                onChange={(e) => onInputChange(e, "m_time")} 
                                 required 
                                 autoFocus 
-                                className={classNames({ 'p-invalid': submitted && !product.st_time })} 
+                                className={classNames({ 'p-invalid': submitted && !mTime.m_time })} 
                                 />
-                            {submitted && !product.st_time && <small className="p-invalid">
-                                Start Time is required.
+                            {submitted && !mTime.m_time && <small className="p-invalid">
+                                Medicine Time is required.
                             </small>}
                         </div>
                         <div className="field">
-                            <label htmlFor="en_time">End Time</label>
+                            <label htmlFor="details">Details</label>
                             <InputText 
-                                id="en_time" 
-                                value={product.en_time} 
-                                onChange={(e) => onInputChange(e, "en_time")} 
-                                required 
-                                className={classNames({ 'p-invalid': submitted && !product.en_time })} 
-                                />
-                            {submitted && !product.en_time && <small className="p-invalid">
-                                End Time is required.
-                            </small>}
+                                id="details" 
+                                value={mTime.details} 
+                                onChange={(e) => onInputChange(e, "details")}
+                            />
                         </div>
                     </Dialog>
 
                     <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
                         <div className="flex align-items-center justify-content-center">
                             <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {product && (
+                            {mTime && (
                                 <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
+                                    Are you sure you want to delete <b>{mTime.name}</b>?
                                 </span>
                             )}
                         </div>

@@ -256,12 +256,6 @@ const Medicine_Limite = () => {
                         responsiveLayout="scroll"
                     >
 
-                        {/* <Column
-                            field="sl"
-                            header="SL"
-                            body={codeBodyTemplate}
-                            sortable
-                        ></Column> */}
                         <Column
                             field="medicine_limite"
                             header="Medicine Limite"
