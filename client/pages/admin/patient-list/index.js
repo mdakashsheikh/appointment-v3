@@ -143,11 +143,11 @@ const Time_Manage = () => {
         // console.log('Nothing', e, name, i);
         let val = (e.target && e.target.value) || ''; 
         let _data = { ...product};
-        _data[name][i] = {[name]: val};
+        _data[name][i] = {[e.target.name]: val};
         setProduct(_data)
     }
 
-    console.log(mLimite, 'mLimite')
+
     const mTimeFiltered = mTime?.filter((item) => item.is_active == '1');
     const TimeList = mTimeFiltered?.map((item) => {
         return {  label: item.m_time, value: item.m_time }
@@ -461,7 +461,7 @@ const Time_Manage = () => {
                                         <label htmlFor="doctor">Taking Rule</label>
                                         <Dropdown
                                             value={medicine_info.taking_rule}
-                                            name='doctor'
+                                            name='taking_rule'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i)}
                                             options={ruleList}
                                             optionLabel="label"
@@ -482,7 +482,7 @@ const Time_Manage = () => {
                                         <label htmlFor="doctor">Taking Limite</label>
                                         <Dropdown
                                             value={medicine_info.taking_limite}
-                                            name='doctor'
+                                            name='taking_limite'
                                             onChange={(e) => onMedicineChange(e, "medicine_info", i)}
                                             options={limiteList}
                                             optionLabel="label"
