@@ -124,6 +124,11 @@ const AppMenu = () => {
                                 label: 'Medicine Rule',
                                 icon: 'pi pi-clone',
                                 to: '/admin/prescription-manages/medicine-rule'
+                            },
+                            {
+                                label: 'Upload Medicine',
+                                icon: 'pi pi-arrow-up',
+                                to: '/admin/prescription-manages/medicine-upload'
                             }
                         ]
                     }

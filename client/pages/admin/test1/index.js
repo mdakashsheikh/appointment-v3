@@ -425,7 +425,7 @@ const Time_Manage = () => {
                             }}
 
                             onSubmit={values => {
-                                console.log(values);
+                                console.log("Values->", values);
                             }}
                         >
                             {(formik) => (
@@ -436,31 +436,31 @@ const Time_Manage = () => {
                                             render={(arrayHelpers) => {
                                                 return (
                                                     <div>
-                                                        {formik.values.medicine_info.map((medicine_in, i) => (
+                                                        {formik.values.medicine_info.map((medicine_info, i) => (
                                                         <div key={i}>
                                                             <div className="formgrid grid" >
                                                                 <div className="field col">
-                                                                    <label htmlFor="specialist">Medicine Name</label>
+                                                                    <label htmlFor="medicine_name">Medicine Name</label>
                                                                     <Dropdown
-                                                                        id="medicine_name"
+                                                                        inputId="medicine_name"
                                                                         name="medicine_name"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_in.${i}.medicine_name`}
+                                                                        value={`medicine_info.${i}.medicine_name`}
                                                                         options={medicineList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Medicine"
                                                                         onChange={(e) => {
-                                                                            formik.setFieldValue('medicine_name', e.value);
+                                                                            formik.setFieldValue('medicine_name', e.value.target);
                                                                         }}
                                                                     />
                                                                 </div>
                                                                 <div className="field col">
-                                                                    <label htmlFor="doctor">Taking Time</label>
+                                                                    <label htmlFor="medicine_time">Taking Time</label>
                                                                     <Dropdown
-                                                                        id="medicine_time"
+                                                                        inputId="medicine_time"
                                                                         name="medicine_time"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_in.${i}.medicine_time`}
+                                                                        value={`medicine_info.${i}.medicine_time`}
                                                                         options={timeList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Time"
@@ -470,12 +470,12 @@ const Time_Manage = () => {
                                                                     />
                                                                 </div>
                                                                 <div className="field col">
-                                                                    <label htmlFor="doctor">Taking Rule</label>
+                                                                    <label htmlFor="medicine_rule">Taking Rule</label>
                                                                     <Dropdown
-                                                                        id="medicine_rule"
+                                                                        inputId="medicine_rule"
                                                                         name="medicine_rule"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_in.${i}.medicine_rule`}
+                                                                        value={`medicine_info.${i}.medicine_rule`}
                                                                         options={ruleList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Rule"
@@ -485,12 +485,12 @@ const Time_Manage = () => {
                                                                     />
                                                                 </div>
                                                                 <div className="field col">
-                                                                    <label htmlFor="doctor">Taking Limite</label>
+                                                                    <label htmlFor="medicine_limite">Taking Limite</label>
                                                                     <Dropdown
-                                                                        id="medicine_limite"
+                                                                        inputId="medicine_limite"
                                                                         name="medicine_limite"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_in.${i}.medicine_limite`}
+                                                                        value={`medicine_info.${i}.medicine_limite`}
                                                                         options={limiteList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Limite"
@@ -507,12 +507,14 @@ const Time_Manage = () => {
                                                                         id={`medicine_in.${i}.medicine_limite`}
                                                                     />
                                                                 </div> */}
-                                                                <button 
+                                                                {i > 0 && <button 
                                                                     type='sunmit'
                                                                     onClick={() => arrayHelpers.remove(i)} 
+                                                                    className=' mt-4 mb-4'
                                                                 >
                                                                     ❌
-                                                                </button>
+                                                                </button>} 
+                                                                
                                                             </div>
                                                         </div>
                                                         ))}
