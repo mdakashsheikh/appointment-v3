@@ -151,7 +151,7 @@ const Time_Manage = () => {
 
 
     const mTimeFiltered = mTime?.filter((item) => item.is_active == '1');
-    const TimeList = mTimeFiltered?.map((item) => {
+    const timeList = mTimeFiltered?.map((item) => {
         return {  label: item.m_time, value: item.m_time }
     })
 
@@ -164,6 +164,12 @@ const Time_Manage = () => {
     const limiteList = mLimiteFiltered?.map(item => {
         return { label: item.medicine_limite, value: item.medicine_limite }
     })
+
+    const medicineList = [
+        { label: 'Napa', value: 'Napa' },
+        { label: 'Pantonix', value: 'Pantonix' },
+        { label: 'Osemoprazole', value: 'Osemoprazole' },
+    ];
 
     const nameBodyTemplate = (rowData) => {
         return (
@@ -435,36 +441,72 @@ const Time_Manage = () => {
                                                             <div className="formgrid grid" >
                                                                 <div className="field col">
                                                                     <label htmlFor="specialist">Medicine Name</label>
-                                                                    <Field
-                                                                        type='text'
-                                                                        name={`medicine_in.${i}.medicine_name`}
-                                                                        id={`medicine_in.${i}.medicine_name`}
+                                                                    <Dropdown
+                                                                        id="medicine_name"
+                                                                        name="medicine_name"
+                                                                        // value={formik.values.city}
+                                                                        value={`medicine_in.${i}.medicine_name`}
+                                                                        options={medicineList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Medicine"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue('medicine_name', e.value);
+                                                                        }}
                                                                     />
                                                                 </div>
                                                                 <div className="field col">
                                                                     <label htmlFor="doctor">Taking Time</label>
-                                                                    <Field
-                                                                        type='text'
-                                                                        name={`medicine_in.${i}.medicine_time`}
-                                                                        id={`medicine_in.${i}.medicine_time`}
+                                                                    <Dropdown
+                                                                        id="medicine_time"
+                                                                        name="medicine_time"
+                                                                        // value={formik.values.city}
+                                                                        value={`medicine_in.${i}.medicine_time`}
+                                                                        options={timeList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Time"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue('medicine_time', e.value);
+                                                                        }}
                                                                     />
                                                                 </div>
                                                                 <div className="field col">
                                                                     <label htmlFor="doctor">Taking Rule</label>
-                                                                    <Field
-                                                                        type='text'
-                                                                        name={`medicine_in.${i}.medicine_rule`}
-                                                                        id={`medicine_in.${i}.medicine_rule`}
+                                                                    <Dropdown
+                                                                        id="medicine_rule"
+                                                                        name="medicine_rule"
+                                                                        // value={formik.values.city}
+                                                                        value={`medicine_in.${i}.medicine_rule`}
+                                                                        options={ruleList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Rule"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue('medicine_rule', e.value);
+                                                                        }}
                                                                     />
                                                                 </div>
                                                                 <div className="field col">
+                                                                    <label htmlFor="doctor">Taking Limite</label>
+                                                                    <Dropdown
+                                                                        id="medicine_limite"
+                                                                        name="medicine_limite"
+                                                                        // value={formik.values.city}
+                                                                        value={`medicine_in.${i}.medicine_limite`}
+                                                                        options={limiteList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Limite"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue('medicine_limite', e.value);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                {/* <div className="field col">
                                                                     <label htmlFor="doctor">Taking Limite</label>
                                                                     <Field
                                                                         type='text'
                                                                         name={`medicine_in.${i}.medicine_limite`}
                                                                         id={`medicine_in.${i}.medicine_limite`}
                                                                     />
-                                                                </div>
+                                                                </div> */}
                                                                 <button 
                                                                     type='sunmit'
                                                                     onClick={() => arrayHelpers.remove(i)} 
@@ -472,27 +514,26 @@ const Time_Manage = () => {
                                                                     ❌
                                                                 </button>
                                                             </div>
-                                                            <button 
-                                                                type="submit" 
-                                    
-                                                                onClick={() => arrayHelpers.insert(formik.values.medicine_info.length + 1, {medicine_name:'', medicine_time: '', medicine_rule: '', medicine_limite: ''})}
-                                                            >
-                                                                + Add
-                                                            </button>
                                                         </div>
                                                         ))}
+                                                        <div>
+                                                        <button 
+                                                            type="submit" 
+                                
+                                                            onClick={() => arrayHelpers.insert(formik.values.medicine_info.length + 1, 
+                                                                {medicine_name:'', medicine_time: '', medicine_rule: '', medicine_limite: ''}
+                                                            )}
+                                                        >
+                                                            + Add
+                                                        </button>
+                                                        </div>
                                                     </div>
                                                 )
                                             }}
                                         />
                                     </div>
-                                    {/* <button type='submit' onSubmit={formik.handleSubmit}>
-                                        Submit
-                                    </button> */}
-                                    {/* <Button label="Yes" icon="pi pi-check" text onSubmit={formik.handleSubmit} /> */}
                                     <>
-                                        <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-                                        <Button label="Save" icon="pi pi-check" text onSubmit={saveProduct} />
+                                        <Button label="Save"  text onSubmit={formik.handleSubmit} />
                                     </>
                                 </Form>
                             )}

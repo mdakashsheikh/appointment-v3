@@ -90,8 +90,8 @@ const Time_Manage = () => {
         validate: values => {
             let errors = {};
 
-            if(!values.medicine_time) {
-                errors.medicine_time = 'Required'
+            if(!values.medicine_name) {
+                errors.medicine_name = 'Required'
             }
 
             if(!values.taking_limite) {
@@ -99,8 +99,16 @@ const Time_Manage = () => {
             }
 
             if(!values.taking_rule) {
-
+                errors.taking_rule = 'Required'
             }
+
+            if(!values.taking_time) {
+                errors.taking_time = 'Required'
+            }
+        },
+
+        onSubmit: (values) => {
+
         }
     })
 
@@ -438,99 +446,77 @@ const Time_Manage = () => {
                         footer={productDialogFooter}
                         onHide={hideDialog}
                     >
-                
-                        {product.medicine_info?.map((medicine_info, i) => {
-                            return (
-                                <div className="formgrid grid" key={i}>
-                                    <div className="field col">
-                                        <label htmlFor="specialist">Medicine Name</label>
-                                        <Dropdown
-                                            value={medicine_info.medicine_name}
-                                            name='medicine_name'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            // options={specialistList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicine Name"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info.medicine_name,
-                                            })}
+                        {(formik) => (
+                                <Form>
+                                    <div>
+                                        <FieldArray 
+                                            name='medicine_info'
+                                            render={(arrayHelpers) => {
+                                                return (
+                                                    <div>
+                                                        {formik.values.medicine_info.map((medicine_in, i) => (
+                                                        <div key={i}>
+                                                            <div className="formgrid grid" >
+                                                                <div className="field col">
+                                                                    <label htmlFor="specialist">Medicine Name</label>
+                                                                    <Field
+                                                                        type='text'
+                                                                        name={`medicine_in.${i}.medicine_name`}
+                                                                        id={`medicine_in.${i}.medicine_name`}
+                                                                    />
+                                                                </div>
+                                                                <div className="field col">
+                                                                    <label htmlFor="doctor">Taking Time</label>
+                                                                    <Field
+                                                                        type='text'
+                                                                        name={`medicine_in.${i}.medicine_time`}
+                                                                        id={`medicine_in.${i}.medicine_time`}
+                                                                    />
+                                                                </div>
+                                                                <div className="field col">
+                                                                    <label htmlFor="doctor">Taking Rule</label>
+                                                                    <Field
+                                                                        type='text'
+                                                                        name={`medicine_in.${i}.medicine_rule`}
+                                                                        id={`medicine_in.${i}.medicine_rule`}
+                                                                    />
+                                                                </div>
+                                                                <div className="field col">
+                                                                    <label htmlFor="doctor">Taking Limite</label>
+                                                                    <Field
+                                                                        type='text'
+                                                                        name={`medicine_in.${i}.medicine_limite`}
+                                                                        id={`medicine_in.${i}.medicine_limite`}
+                                                                    />
+                                                                </div>
+                                                                <button 
+                                                                    type='sunmit'
+                                                                    onClick={() => arrayHelpers.remove(i)} 
+                                                                >
+                                                                    ❌
+                                                                </button>
+                                                            </div>
+                                                            <button 
+                                                                type="submit" 
+                                    
+                                                                onClick={() => arrayHelpers.insert(formik.values.medicine_info.length + 1, 
+                                                                    {medicine_name:'', medicine_time: '', medicine_rule: '', medicine_limite: ''}
+                                                                )}
+                                                            >
+                                                                + Add
+                                                            </button>
+                                                        </div>
+                                                        ))}
+                                                    </div>
+                                                )
+                                            }}
                                         />
-                                        {submitted && !medicine_info.medicine_name && (
-                                            <small className="p-invalid">
-                                                Medicine Name is required.
-                                            </small>
-                                        )}
                                     </div>
-                                    <div className="field col">
-                                        <label htmlFor="doctor">Taking Time</label>
-                                        <Dropdown
-                                            value={medicine_info.taking_time}
-                                            name='taking_time'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            options={TimeList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicne Time"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info && (
-                                            <small className="p-invalid">
-                                                Medicne Time is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                    <div className="field col">
-                                        <label htmlFor="doctor">Taking Rule</label>
-                                        <Dropdown
-                                            value={medicine_info.taking_rule}
-                                            name='taking_rule'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            options={ruleList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicne Rule"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info && (
-                                            <small className="p-invalid">
-                                                Medicne Rule is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                    <div className="field col">
-                                        <label htmlFor="doctor">Taking Limite</label>
-                                        <Dropdown
-                                            value={medicine_info.taking_limite}
-                                            name='taking_limite'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            options={limiteList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicne Rule"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info && (
-                                            <small className="p-invalid">
-                                                Medicne Limite is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        <Button label="Add" icon="pi pi-plus" severity="sucess" className="mr-2 mb-3 w-10rem" onClick={onAdd}/>
-                        
+                                    <>
+                                        <Button label="Save"  text onSubmit={formik.handleSubmit} />
+                                    </>
+                                </Form>
+                            )}              
                     </Dialog>
 
                     <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
