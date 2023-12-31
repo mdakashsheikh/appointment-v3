@@ -1,3 +1,4 @@
+import { Papa } from 'papaparse';
 import { Button } from 'primereact/button';
 import { Column } from 'primereact/column';
 import { DataTable } from 'primereact/datatable';
@@ -24,6 +25,7 @@ const Medicine_Upload = () => {
 
     const [medicines, setMedicines] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
+    const [csvDialog, setCSVDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [medicine, setMedicine] = useState(emptyTime);
     const [selectedProducts, setSelectedProducts] = useState(null);
@@ -33,6 +35,7 @@ const Medicine_Upload = () => {
     const dt = useRef(null);
     const [toggleRefresh, setTogleRefresh] = useState(false);
     const [jwtToken, setJwtToken] = useState(null);
+    const [csvData, setCSVData] = useState([]);
 
     useEffect(() => {
         const jwtToken = getJWTAdmin();
@@ -60,10 +63,21 @@ const Medicine_Upload = () => {
         setProductDialog(true);
     };
 
+    const openCSV = () => {
+        setMedicine(emptyTime);
+        setSubmitted(false);
+        setCSVDialog(true);
+    }
+
     const hideDialog = () => {
         setSubmitted(false);
         setProductDialog(false);
     };
+
+    const hideCSVDialog = () => {
+        setSubmitted(false);
+        setCSVDialog(false);
+    }
 
     const hideDeleteProductDialog = () => {
         setDeleteProductDialog(false);
@@ -96,6 +110,11 @@ const Medicine_Upload = () => {
             })
         }
     };
+
+    const saveCSV = () => {
+        setSubmitted(true);
+
+    }
 
     const editProduct = (medicine) => {
         setMedicine({ ...medicine });
@@ -181,11 +200,32 @@ const Medicine_Upload = () => {
             </React.Fragment>
         );
     };
+    
+    const handleCSV = (e) => {
+        Papa.parse(e.target.files[0], {
+            header: true,
+            skipEmptyLines: true,
+            complete: function(result) {
+                const columnArray = [];
+                const valuesArray = [];
+
+                result.data.map((d) => {
+                     columnArray.push(Object.keys(d));
+                     valuesArray.push(Object.values(d))
+                });
+
+                setCSVData(result.data);
+            }
+        })
+    }
+
+    console.log('CSV-Data', csvData);
 
     const rightToolbarTemplate = () => {
         return (
             <React.Fragment>
-                <FileUpload mode="basic" accept="image/*" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" />
+                <Button label="Upload Medicine CSV" icon="pi pi-upload" severity="sucess" className="mr-2 inline-block" onClick={openCSV} />
+                {/* <FileUpload mode="basic" accept=".csv" maxFileSize={1000000} label="Import" chooseLabel="Import" className="mr-2 inline-block" onClick={handleCSV} /> */}
                 <Button label="Export" icon="pi pi-upload" severity="help" onClick={exportCSV} />
             </React.Fragment>
         );
@@ -198,7 +238,7 @@ const Medicine_Upload = () => {
                     icon="pi pi-plus"
                     severity="sucess"
                     className="mr-2"
-                    onClick={openNew}
+                    onChange={openNew}
                 />
             <span className="block mt-2 md:mt-0 p-input-icon-left">
                 <i className="pi pi-search" />
@@ -213,6 +253,14 @@ const Medicine_Upload = () => {
             <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
         </>
     );
+
+    const csvDialogFooter = (
+        <>
+            <Button label='Cancel' icon='pi pi-times' text onClick={hideCSVDialog} />
+            <Button label='Save' icon='pi pi-check' text onClick={saveCSV}/>
+        </>
+    )
+
     const deleteProductDialogFooter = (
         <>
             <Button label="No" icon="pi pi-times" text onClick={hideDeleteProductDialog} />
@@ -360,6 +408,25 @@ const Medicine_Upload = () => {
                             </small>}
                         </div>
                         
+                    </Dialog>
+
+                    <Dialog
+                        visible={csvDialog}
+                        style={{ width: "450px" }}
+                        header="Add CSV File"
+                        modal
+                        className="p-fluid"
+                        footer={csvDialogFooter}
+                        onHide={hideCSVDialog}
+                    >
+                        <FileUpload 
+                            mode="basic" 
+                            accept=".csv"
+                            label="Upload CSV File" 
+                            chooseLabel="Upload CSV File" 
+                            className="mr-2 inline-block" 
+                            onClick={handleCSV} 
+                        />
                     </Dialog>
 
                     <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
