@@ -425,7 +425,7 @@ const Time_Manage = () => {
                             }}
 
                             onSubmit={values => {
-                                console.log("Values->", values);
+                                console.log("Values->", values, product);
                             }}
                         >
                             {(formik) => (
@@ -445,12 +445,12 @@ const Time_Manage = () => {
                                                                         inputId="medicine_name"
                                                                         name="medicine_name"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_info.${i}.medicine_name`}
+                                                                        value={formik.values.medicine_info[i].medicine_name}
                                                                         options={medicineList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Medicine"
                                                                         onChange={(e) => {
-                                                                            formik.setFieldValue('medicine_name', e.value.target);
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_name`, e.value);
                                                                         }}
                                                                     />
                                                                 </div>
@@ -460,12 +460,12 @@ const Time_Manage = () => {
                                                                         inputId="medicine_time"
                                                                         name="medicine_time"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_info.${i}.medicine_time`}
+                                                                        value={formik.values.medicine_info[i].medicine_time}
                                                                         options={timeList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Time"
                                                                         onChange={(e) => {
-                                                                            formik.setFieldValue('medicine_time', e.value);
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_time`, e.value);
                                                                         }}
                                                                     />
                                                                 </div>
@@ -475,12 +475,12 @@ const Time_Manage = () => {
                                                                         inputId="medicine_rule"
                                                                         name="medicine_rule"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_info.${i}.medicine_rule`}
+                                                                        value={formik.values.medicine_info[i].medicine_rule}
                                                                         options={ruleList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Rule"
                                                                         onChange={(e) => {
-                                                                            formik.setFieldValue('medicine_rule', e.value);
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_rule`, e.value);
                                                                         }}
                                                                     />
                                                                 </div>
@@ -490,12 +490,12 @@ const Time_Manage = () => {
                                                                         inputId="medicine_limite"
                                                                         name="medicine_limite"
                                                                         // value={formik.values.city}
-                                                                        value={`medicine_info.${i}.medicine_limite`}
+                                                                        value={formik.values.medicine_info[i].medicine_limite}
                                                                         options={limiteList}
                                                                         optionLabel="label"
                                                                         placeholder="Select a Limite"
                                                                         onChange={(e) => {
-                                                                            formik.setFieldValue('medicine_limite', e.value);
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_limite`, e.value);
                                                                         }}
                                                                     />
                                                                 </div>
@@ -535,7 +535,7 @@ const Time_Manage = () => {
                                         />
                                     </div>
                                     <>
-                                        <Button label="Save"  text onSubmit={formik.handleSubmit} />
+                                        <Button label="Save" type='submit'  text onSubmit={formik.handleSubmit} />
                                     </>
                                 </Form>
                             )}
