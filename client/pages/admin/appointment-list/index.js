@@ -861,7 +861,7 @@ const Appointment = () => {
                         onSelectionChange={(e) => setSelectedPatients(e.value)}
                         dataKey="id"
                         paginator
-                        rows={13}
+                        rows={10}
                         rowsPerPageOptions={[5, 10, 25, 50, 100]}
                         className="datatable-responsive"
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
