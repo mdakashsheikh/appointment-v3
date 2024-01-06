@@ -41,6 +41,9 @@ const patientSc = new mongoose.Schema({
         type: Boolean,
         default: false,
     },
+    medicine_info: {
+        type: Array
+    },
     date: {
         type: Date,
         default: Date.now

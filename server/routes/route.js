@@ -195,7 +195,7 @@ router.get('/get-sms', getSMS);
 router.delete('/delete-sms/:id', deleteSMS);
 
 //Prescription Route URL
-router.post('/post-prescribe', postPrescribe);
+router.post('/post-prescribe/:id', postPrescribe);
 router.post('/edit-prescribe/:id', editPrescribe);
 router.get('/get-prescribe', getPrescribe);
 router.delete('/delete-prescribe/:id', deletePrescribe);

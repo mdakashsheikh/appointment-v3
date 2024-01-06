@@ -1,20 +1,18 @@
 const prescriptionSc = require("../models/prescriptionSc");
+const patientSc = require("../models/patientSc");
 
 const postPrescribe = async(req, res) => {
-    const medicineTime = req.body.medicineTime;
-    const medicineTiming = req.body.medicineTiming;
-    const medicineLimite = req.body.medicineLimite;
+    const id = req.params.id;
+    const info = req.body.info;
 
     try {
-        await prescriptionSc.create({
-            'medicineTime': medicineTime,
-            'medicineTiming': medicineTiming,
-            'medicineLimite': medicineLimite
+        const oneData = await patientSc.findByIdAndUpdate(id, {
+            'medicine_info': info
         })
-        res.send(req.body);
-
+        res.send(oneData);
+        
     } catch (err) {
-        res.status(400).send(err);
+        res.status(400).send(err)
     }
 }
 

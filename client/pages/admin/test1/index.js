@@ -53,6 +53,7 @@ const Time_Manage = () => {
     const [mTime, setMTime] = useState(null);
     const [mLimite, setMLimite] = useState(null);
     const [mRule, setMRule] = useState(null);
+    const [medi, setMedi] = useState([]);
 
     useEffect(() => {
         const jwtToken = getJWTAdmin();
@@ -103,14 +104,14 @@ const Time_Manage = () => {
                 setProductDialog(false);
                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Updated', life: 3000 });
             })
-        } else if( product.st_time && product.en_time) {
+        } else if( medi && product._id) {
             TimeService.postTime(
-                product.st_time,
-                product.en_time,
+                medi,
+                product._id,
             ).then(() => {
                 setTogleRefresh(!toggleRefresh);
                 setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Time is Created', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Prescription is Created', life: 3000 });
             })
         }
     };
@@ -148,6 +149,11 @@ const Time_Manage = () => {
         _data[name][i] = {[e.target.name]: val};
         setProduct(_data)
     }
+
+    // const onSetChange = (val) => {
+    //     let _data = { ...product};
+    //     _data[medicine_info] = val.medicine_info;
+    // }
 
 
     const mTimeFiltered = mTime?.filter((item) => item.is_active == '1');
@@ -326,6 +332,7 @@ const Time_Manage = () => {
     }
 
     console.log(product.medicine_info)
+    console.log('Medi', medi)
 
     return (
         <div className="grid crud-demo">
@@ -416,7 +423,7 @@ const Time_Manage = () => {
                         header="Create a Prescription"
                         modal
                         className="p-fluid"
-                        // footer={productDialogFooter}
+                        footer={productDialogFooter}
                         onHide={hideDialog}
                     >
                         <Formik
@@ -424,10 +431,10 @@ const Time_Manage = () => {
                                 medicine_info: [{medicine_name: '', medicine_time: '', medicine_rule: '', medicine_limite: ''}]
                             }}
 
-                            onSubmit={values => {
+                            // onSubmit={values => {
                                 
-                                console.log("Values->", values, product);
-                            }}
+                            //     console.log("Values->", values, product);
+                            // }}
                         >
                             {(formik) => (
                                 <Form>
@@ -437,6 +444,7 @@ const Time_Manage = () => {
                                             render={(arrayHelpers) => {
                                                 return (
                                                     <div>
+                                                        {setMedi(formik.values.medicine_info)}
                                                         {formik.values.medicine_info.map((medicine_info, i) => (
                                                         <div key={i}>
                                                             <div className="formgrid grid" >
@@ -535,9 +543,9 @@ const Time_Manage = () => {
                                             }}
                                         />
                                     </div>
-                                    <>
+                                    {/* <>
                                         <Button label="Save" type='submit'  text onSubmit={formik.handleSubmit} />
-                                    </>
+                                    </> */}
                                 </Form>
                             )}
                         </Formik>
