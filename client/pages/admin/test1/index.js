@@ -16,8 +16,9 @@ import { MedicineTimeService } from '../../../demo/service/MedecineTimeService';
 import { MedicineRuleService } from '../../../demo/service/MedicineRuleService';
 import { MedicineLimiteService } from '../../../demo/service/MedicineLimiteService';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
+import { PrescriptionService } from '../../../demo/service/PrescriptionService';
 
-const Time_Manage = () => {
+const Prescription_Page = () => {
     let emptyPatient = {
         id: null,
         date1:'',
@@ -94,18 +95,8 @@ const Time_Manage = () => {
 
         console.log("PPPP1",product)
 
-        if( product.st_time && product.en_time, product._id) {
-            TimeService.editTime(
-                product.st_time,
-                product.en_time,
-                product._id,
-            ).then(() => {
-                setTogleRefresh(!toggleRefresh);
-                setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Updated', life: 3000 });
-            })
-        } else if( medi && product._id) {
-            TimeService.postTime(
+        if( medi && product._id) {
+            PrescriptionService.postPrescribe(
                 medi,
                 product._id,
             ).then(() => {
@@ -113,7 +104,17 @@ const Time_Manage = () => {
                 setProductDialog(false);
                 toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Prescription is Created', life: 3000 });
             })
-        }
+        } 
+        // else if( medi && product._id) {
+        //     PrescriptionService.postPrescribe(
+        //         medi,
+        //         product._id,
+        //     ).then(() => {
+        //         setTogleRefresh(!toggleRefresh);
+        //         setProductDialog(false);
+        //         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Prescription is Created', life: 3000 });
+        //     })
+        // }
     };
     
 
@@ -288,7 +289,7 @@ const Time_Manage = () => {
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onSubmit={saveProduct} />
+            <Button type='submit' label="Save" icon="pi pi-check" text onSubmit={saveProduct} />
         </>
     );
     
@@ -330,9 +331,6 @@ const Time_Manage = () => {
         newData.medicine_info = [...product.medicine_info, newAdd ]
         setProduct(newData);
     }
-
-    console.log(product.medicine_info)
-    console.log('Medi', medi)
 
     return (
         <div className="grid crud-demo">
@@ -423,7 +421,7 @@ const Time_Manage = () => {
                         header="Create a Prescription"
                         modal
                         className="p-fluid"
-                        footer={productDialogFooter}
+                        // footer={productDialogFooter}
                         onHide={hideDialog}
                     >
                         <Formik
@@ -543,9 +541,9 @@ const Time_Manage = () => {
                                             }}
                                         />
                                     </div>
-                                    {/* <>
-                                        <Button label="Save" type='submit'  text onSubmit={formik.handleSubmit} />
-                                    </> */}
+                                    <>
+                                        <Button label="Save" type='submit'  text onClick={saveProduct} />
+                                    </>
                                 </Form>
                             )}
                         </Formik>
@@ -557,4 +555,4 @@ const Time_Manage = () => {
     );
 };
 
-export default  Time_Manage;
+export default  Prescription_Page;
