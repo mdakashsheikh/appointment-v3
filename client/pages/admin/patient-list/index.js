@@ -15,9 +15,10 @@ import { PatientService } from '../../../demo/service/PatientService';
 import { MedicineTimeService } from '../../../demo/service/MedecineTimeService';
 import { MedicineRuleService } from '../../../demo/service/MedicineRuleService';
 import { MedicineLimiteService } from '../../../demo/service/MedicineLimiteService';
-import { useFormik } from 'formik';
+import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik'
+import { PrescriptionService } from '../../../demo/service/PrescriptionService';
 
-const Time_Manage = () => {
+const Prescription_Page = () => {
     let emptyPatient = {
         id: null,
         date1:'',
@@ -37,6 +38,10 @@ const Time_Manage = () => {
         medicine_info: [{ medicine_name: '', taking_time: '', taking_rule: '', taking_limite: ''}],
     };
 
+    let emptyPrescription = {
+        medicine_info: [{medicine_name: '', medicine_time: '', medicine_rule: '', medicine_limite: ''}]
+    }
+
     const [patients, setPatients] = useState(null);
     const [products, setProducts] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
@@ -53,6 +58,7 @@ const Time_Manage = () => {
     const [mTime, setMTime] = useState(null);
     const [mLimite, setMLimite] = useState(null);
     const [mRule, setMRule] = useState(null);
+    const [medi, setMedi] = useState([{medicine_name: '', medicine_time: '', medicine_rule: '', medicine_limite: ''}]);
 
     useEffect(() => {
         const jwtToken = getJWTAdmin();
@@ -78,7 +84,6 @@ const Time_Manage = () => {
 
     }, [ jwtToken,toggleRefresh]);
 
-
     const hideDialog = () => {
         setSubmitted(false);
         setProductDialog(false);
@@ -94,27 +99,28 @@ const Time_Manage = () => {
 
         console.log("PPPP1",product)
 
-        if( product.st_time && product.en_time, product._id) {
-            TimeService.editTime(
-                product.st_time,
-                product.en_time,
+        if( medi && product._id) {
+            PrescriptionService.postPrescribe(
+                medi,
                 product._id,
             ).then(() => {
                 setTogleRefresh(!toggleRefresh);
                 setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Time is Updated', life: 3000 });
+                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Prescription is Created', life: 3000 });
             })
-        } else if( product.st_time && product.en_time) {
-            TimeService.postTime(
-                product.st_time,
-                product.en_time,
-            ).then(() => {
-                setTogleRefresh(!toggleRefresh);
-                setProductDialog(false);
-                toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Time is Created', life: 3000 });
-            })
-        }
+        } 
+        // else if( medi && product._id) {
+        //     PrescriptionService.postPrescribe(
+        //         medi,
+        //         product._id,
+        //     ).then(() => {
+        //         setTogleRefresh(!toggleRefresh);
+        //         setProductDialog(false);
+        //         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'New Prescription is Created', life: 3000 });
+        //     })
+        // }
     };
+    
 
     const editProduct = (product) => {
         const empty_medicine_info = emptyPatient.medicine_info;
@@ -149,9 +155,14 @@ const Time_Manage = () => {
         setProduct(_data)
     }
 
+    // const onSetChange = (val) => {
+    //     let _data = { ...product};
+    //     _data[medicine_info] = val.medicine_info;
+    // }
+
 
     const mTimeFiltered = mTime?.filter((item) => item.is_active == '1');
-    const TimeList = mTimeFiltered?.map((item) => {
+    const timeList = mTimeFiltered?.map((item) => {
         return {  label: item.m_time, value: item.m_time }
     })
 
@@ -164,6 +175,12 @@ const Time_Manage = () => {
     const limiteList = mLimiteFiltered?.map(item => {
         return { label: item.medicine_limite, value: item.medicine_limite }
     })
+
+    const medicineList = [
+        { label: 'Napa', value: 'Napa' },
+        { label: 'Pantonix', value: 'Pantonix' },
+        { label: 'Osemoprazole', value: 'Osemoprazole' },
+    ];
 
     const nameBodyTemplate = (rowData) => {
         return (
@@ -276,7 +293,7 @@ const Time_Manage = () => {
     const productDialogFooter = (
         <>
             <Button label="Cancel" icon="pi pi-times" text onClick={hideDialog} />
-            <Button label="Save" icon="pi pi-check" text onClick={saveProduct} />
+            <Button type='submit' label="Save" icon="pi pi-check" text onSubmit={saveProduct} />
         </>
     );
     
@@ -319,7 +336,7 @@ const Time_Manage = () => {
         setProduct(newData);
     }
 
-    console.log(product.medicine_info)
+    console.log(product.medicine_info, "MEDI")
 
     return (
         <div className="grid crud-demo">
@@ -410,113 +427,132 @@ const Time_Manage = () => {
                         header="Create a Prescription"
                         modal
                         className="p-fluid"
-                        footer={productDialogFooter}
+                        // footer={productDialogFooter}
                         onHide={hideDialog}
                     >
-                
-                        {product.medicine_info?.map((medicine_info, i) => {
-                            return (
-                                <div className="formgrid grid" key={i}>
-                                    <div className="field col">
-                                        <label htmlFor="specialist">Medicine Name</label>
-                                        <Dropdown
-                                            value={medicine_info.medicine_name}
-                                            name='medicine_name'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            // options={specialistList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicine Name"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info.medicine_name,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info.medicine_name && (
-                                            <small className="p-invalid">
-                                                Medicine Name is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                    <div className="field col">
-                                        <label htmlFor="doctor">Taking Time</label>
-                                        <Dropdown
-                                            value={medicine_info.taking_time}
-                                            name='taking_time'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            options={TimeList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicne Time"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info && (
-                                            <small className="p-invalid">
-                                                Medicne Time is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                    <div className="field col">
-                                        <label htmlFor="doctor">Taking Rule</label>
-                                        <Dropdown
-                                            value={medicine_info.taking_rule}
-                                            name='taking_rule'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            options={ruleList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicne Rule"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info && (
-                                            <small className="p-invalid">
-                                                Medicne Rule is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                    <div className="field col">
-                                        <label htmlFor="doctor">Taking Limite</label>
-                                        <Dropdown
-                                            value={medicine_info.taking_limite}
-                                            name='taking_limite'
-                                            onChange={(e) => onMedicineChange(e, "medicine_info", i)}
-                                            options={limiteList}
-                                            optionLabel="label"
-                                            showClear
-                                            placeholder="Select a Medicne Rule"
-                                            required
-                                            className={classNames({
-                                                "p-invalid": submitted && !medicine_info,
-                                            })}
-                                        />
-                                        {submitted && !medicine_info && (
-                                            <small className="p-invalid">
-                                                Medicne Limite is required.
-                                            </small>
-                                        )}
-                                    </div>
-                                </div>
-                            )
-                        })}
-                        <Button label="Add" icon="pi pi-plus" severity="sucess" className="mr-2 mb-3 w-10rem" onClick={onAdd}/>
-                        
-                    </Dialog>
+                        <Formik
+                            initialValues={{
+                                medicine_info: product.medicine_info || medi
+                            }}
 
-                    <Dialog visible={deleteProductDialog} style={{ width: '450px' }} header="Confirm" modal footer={deleteProductDialogFooter} onHide={hideDeleteProductDialog}>
-                        <div className="flex align-items-center justify-content-center">
-                            <i className="pi pi-exclamation-triangle mr-3" style={{ fontSize: '2rem' }} />
-                            {product && (
-                                <span>
-                                    Are you sure you want to delete <b>{product.name}</b>?
-                                </span>
+                            // onSubmit={values => {
+                                
+                            //     console.log("Values->", values, product);
+                            // }}
+                        >
+                            {(formik) => (
+                                <Form>
+                                    <div>
+                                        <FieldArray 
+                                            name='medicine_info'
+                                            render={(arrayHelpers) => {
+                                                return (
+                                                    <div>
+                                                        {setMedi(formik.values.medicine_info)}
+                                                        {formik.values.medicine_info.map((medicine_info, i) => (
+                                                        <div key={i}>
+                                                            <div className="formgrid grid" >
+                                                                <div className="field col">
+                                                                    <label htmlFor="medicine_name">Medicine Name</label>
+                                                                    <Dropdown
+                                                                        inputId="medicine_name"
+                                                                        name="medicine_name"
+                                                                        // value={formik.values.city}
+                                                                        value={formik.values.medicine_info[i].medicine_name}
+                                                                        options={medicineList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Medicine"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_name`, e.value);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <div className="field col">
+                                                                    <label htmlFor="medicine_time">Taking Time</label>
+                                                                    <Dropdown
+                                                                        inputId="medicine_time"
+                                                                        name="medicine_time"
+                                                                        // value={formik.values.city}
+                                                                        value={formik.values.medicine_info[i].medicine_time}
+                                                                        options={timeList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Time"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_time`, e.value);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <div className="field col">
+                                                                    <label htmlFor="medicine_rule">Taking Rule</label>
+                                                                    <Dropdown
+                                                                        inputId="medicine_rule"
+                                                                        name="medicine_rule"
+                                                                        // value={formik.values.city}
+                                                                        value={formik.values.medicine_info[i].medicine_rule}
+                                                                        options={ruleList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Rule"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_rule`, e.value);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                <div className="field col">
+                                                                    <label htmlFor="medicine_limite">Taking Limite</label>
+                                                                    <Dropdown
+                                                                        inputId="medicine_limite"
+                                                                        name="medicine_limite"
+                                                                        // value={formik.values.city}
+                                                                        value={formik.values.medicine_info[i].medicine_limite}
+                                                                        options={limiteList}
+                                                                        optionLabel="label"
+                                                                        placeholder="Select a Limite"
+                                                                        onChange={(e) => {
+                                                                            formik.setFieldValue(`medicine_info.${i}.medicine_limite`, e.value);
+                                                                        }}
+                                                                    />
+                                                                </div>
+                                                                {/* <div className="field col">
+                                                                    <label htmlFor="doctor">Taking Limite</label>
+                                                                    <Field
+                                                                        type='text'
+                                                                        name={`medicine_in.${i}.medicine_limite`}
+                                                                        id={`medicine_in.${i}.medicine_limite`}
+                                                                    />
+                                                                </div> */}
+                                                                {i > 0 && <button 
+                                                                    type='sunmit'
+                                                                    onClick={() => arrayHelpers.remove(i)} 
+                                                                    className=' mt-4 mb-4'
+                                                                >
+                                                                    ❌
+                                                                </button>} 
+                                                                
+                                                            </div>
+                                                        </div>
+                                                        ))}
+                                                        <div>
+                                                        <button 
+                                                            type="submit" 
+                                
+                                                            onClick={() => arrayHelpers.insert(formik.values.medicine_info.length + 1, 
+                                                                {medicine_name:'', medicine_time: '', medicine_rule: '', medicine_limite: ''}
+                                                            )}
+                                                        >
+                                                            + Add
+                                                        </button>
+                                                        </div>
+                                                    </div>
+                                                )
+                                            }}
+                                        />
+                                    </div>
+                                    <>
+                                        <Button label="Save" type='submit'  text onClick={saveProduct} />
+                                    </>
+                                </Form>
                             )}
-                        </div>
+                        </Formik>
                     </Dialog>
                     
                 </div>
@@ -525,4 +561,4 @@ const Time_Manage = () => {
     );
 };
 
-export default  Time_Manage;
+export default  Prescription_Page;

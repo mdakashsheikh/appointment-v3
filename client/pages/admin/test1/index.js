@@ -38,6 +38,10 @@ const Prescription_Page = () => {
         medicine_info: [{ medicine_name: '', taking_time: '', taking_rule: '', taking_limite: ''}],
     };
 
+    let emptyPrescription = {
+        medicine_info: [{medicine_name: '', medicine_time: '', medicine_rule: '', medicine_limite: ''}]
+    }
+
     const [patients, setPatients] = useState(null);
     const [products, setProducts] = useState(null);
     const [productDialog, setProductDialog] = useState(false);
@@ -54,7 +58,7 @@ const Prescription_Page = () => {
     const [mTime, setMTime] = useState(null);
     const [mLimite, setMLimite] = useState(null);
     const [mRule, setMRule] = useState(null);
-    const [medi, setMedi] = useState([]);
+    const [medi, setMedi] = useState([{medicine_name: '', medicine_time: '', medicine_rule: '', medicine_limite: ''}]);
 
     useEffect(() => {
         const jwtToken = getJWTAdmin();
@@ -332,6 +336,8 @@ const Prescription_Page = () => {
         setProduct(newData);
     }
 
+    console.log(product.medicine_info, "MEDI")
+
     return (
         <div className="grid crud-demo">
             <div className="col-12">
@@ -426,7 +432,7 @@ const Prescription_Page = () => {
                     >
                         <Formik
                             initialValues={{
-                                medicine_info: [{medicine_name: '', medicine_time: '', medicine_rule: '', medicine_limite: ''}]
+                                medicine_info: product.medicine_info || medi
                             }}
 
                             // onSubmit={values => {
