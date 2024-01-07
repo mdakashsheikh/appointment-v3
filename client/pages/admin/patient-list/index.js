@@ -336,7 +336,7 @@ const Prescription_Page = () => {
         setProduct(newData);
     }
 
-    console.log(product.medicine_info, "MEDI")
+    console.log(medi, "MEDI")
 
     return (
         <div className="grid crud-demo">
@@ -432,7 +432,7 @@ const Prescription_Page = () => {
                     >
                         <Formik
                             initialValues={{
-                                medicine_info: product.medicine_info || medi
+                                medicine_info: !product.medicine_info?.length ? [{ medicine_name: '', taking_time: '', taking_rule: '', taking_limite: '' }] : product.medicine_info
                             }}
 
                             // onSubmit={values => {
