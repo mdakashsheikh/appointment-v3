@@ -1,49 +1,9 @@
 import React, { useRef } from "react";
 import { useFormik } from 'formik';
-import { Dropdown } from 'primereact/dropdown';
-import { Button } from 'primereact/button';
-import { Toast } from 'primereact/toast';
-import { classNames } from 'primereact/utils';
+// import bg_prescription from '../../../public/prescription/bg_prescription.jpg';
 
 export default function FormikDoc() {
     const toast = useRef(null);
-    const cities = [
-        { name: 'New York', code: 'NY' },
-        { name: 'Rome', code: 'RM' },
-        { name: 'London', code: 'LDN' },
-        { name: 'Istanbul', code: 'IST' },
-        { name: 'Paris', code: 'PRS' }
-    ];
-
-    const show = (data) => {
-        toast.current.show({ severity: 'success', summary: 'Form Submitted', detail: `${data.city.name}` });
-    };
-
-    const formik = useFormik({
-        initialValues: {
-            city: ''
-        },
-        validate: (data) => {
-            let errors = {};
-
-            if (!data.city) {
-                errors.city = 'City is required.';
-            }
-
-            return errors;
-        },
-        onSubmit: (data) => {
-            data.city && show(data);
-            formik.resetForm();
-        }
-    });
-
-    const isFormFieldInvalid = (name) => !!(formik.touched[name] && formik.errors[name]);
-
-    const getFormErrorMessage = (name) => {
-        return isFormFieldInvalid(name) ? <small className="p-error">{formik.errors[name]}</small> : <small className="p-error">&nbsp;</small>;
-    };
-    
     return (
         <div className="card">
             <div className="grid">
@@ -63,10 +23,31 @@ export default function FormikDoc() {
                     <p>Close: Sunday</p>
                 </div>
             </div>
-            <hr className="bold"/>
+            <hr/>
+            <div className="grid">
+                <div className="col"></div>
+                <div className="col"></div>
+                <div className="col">
+                    <p className="font-bold">Date: 04/01/2024</p>
+                </div>
+            </div>
+            <div>
+                <p className="font-bold">ID: 11 - OPD6 PATIENT (MALE) / 13 Y Mob.No: 01811223355</p>
+            </div>
+            <hr/>
+            <div className="grid">
+                <div className="col ml-7">
+                    Chief Conplaints
+                </div>
+                <div className="col">
+                    Clinicla Findings
+                </div>
+            </div>
+            <hr/>
             <div className="flex justify-content-center">
                
             </div>
         </div>
     )
+
 }
