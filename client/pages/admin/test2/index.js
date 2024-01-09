@@ -45,24 +45,28 @@ export default function FormikDoc() {
     };
     
     return (
-        <div className="card flex justify-content-center">
-            <form onSubmit={formik.handleSubmit} className="flex flex-column align-items-center gap-2">
-                <Toast ref={toast} />
-                <Dropdown
-                    inputId="city"
-                    name="city"
-                    value={formik.values.city}
-                    options={cities}
-                    optionLabel="name"
-                    placeholder="Select a City"
-                    className={classNames({ 'p-invalid': isFormFieldInvalid('city') })}
-                    onChange={(e) => {
-                        formik.setFieldValue('city', e.value);
-                    }}
-                />
-                {getFormErrorMessage('city')}
-                <Button type="submit" label="Submit" />
-            </form>
+        <div className="card">
+            <div className="grid">
+                <div className="col">
+                    <h4>Dr Razeeb</h4>
+                    <p>M.S</p>
+                    <p>Reg.No: MMC 2024</p>
+                </div>
+                <div className="col">
+                   
+                </div>
+                <div className="col">
+                    <h3>Ibne Sina Hospital</h3>
+                    <p>House # 48, Road # 9/A, Dhanmondi, Dhaka 1209</p>
+                    <p>Ph.No: 01711223344, 01911223344</p>
+                    <p>Open: 6PM - 9PM</p>
+                    <p>Close: Sunday</p>
+                </div>
+            </div>
+            <hr className="bold"/>
+            <div className="flex justify-content-center">
+               
+            </div>
         </div>
     )
 }
