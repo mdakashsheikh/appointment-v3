@@ -1,4 +1,5 @@
 const express = require('express');
+const router = express.Router();
 const path = require('path');
 
 let multer = require('multer');
@@ -113,7 +114,7 @@ const {
     toggleRule
 } = require('../controllers/medicineRule');
 
-const router = express.Router();
+
 
 router.use(express.static('public'))
 router.use(express.static('files'))

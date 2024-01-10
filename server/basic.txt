@@ -1,0 +1,25 @@
+
+
+mongoDB <-- model <-- router <-- controller 
+
+model
+----------------
+patientSc.js
+    - mongoose
+
+router
+----------------
+route.js
+    - express,
+    - Router
+
+controller
+----------------
+patient.js
+    - express
+    - body-parser
+    - mongoose
+    - cors
+    - dotenv
+
+**  How to export/import Data   **
