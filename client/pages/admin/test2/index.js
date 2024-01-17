@@ -16,7 +16,7 @@ export default function FormikDoc() {
                    
                 </div>
                 <div className="col">
-                    <h3>Ibne Sina Hospital</h3>
+                    <h3 className="text-blue-600 font-bold">Ibne Sina Hospital</h3>
                     <p>House # 48, Road # 9/A, Dhanmondi, Dhaka 1209</p>
                     <p>Ph.No: 01711223344, 01911223344</p>
                     <p>Open: 6PM - 9PM</p>
